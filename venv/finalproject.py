@@ -1,5 +1,5 @@
 import pygame
-
+import time
 #initialize pygame
 pygame.init()
 #create screen
@@ -64,12 +64,17 @@ explanations.append(" Otherwise its a TLB miss")
 explanations.append("The processor will then search the page table one entry at a time for the Page # to get the frame#")
 explanations.append("The corresponding Frame number and offset are joined together to get the physical address")
 
-
+#controls animation
+step2ani=0
+step3ani=0
+step5ani=0
+step6ani=0
 def explanation(step,x,y):
     explanation= font.render(explanations[step],True,(0,0,0))
     screen.blit(explanation,(x,y))
 def step0():
-    print("begin")
+    explanation(step, fontx, fonty)
+
 
 def step1():
     step0()
@@ -77,36 +82,58 @@ def step1():
     screen.blit(tlb, (tlbx, tlby))
     screen.blit(virtualaddress, (virtualaddressx, virtualaddressy))
 
+
 def step2():
     step1()
-    pygame.draw.line(screen, red,(200,200),(700,200),6 )
+    global step2ani
+    if step2ani>=450:
+        step2ani=450
+        screen.blit(arrows, (arrowsx, arrowsy))
+    step2ani+=0.5
+    pygame.draw.line(screen, red,(200,200),(200+step2ani,200),6 )
     pygame.draw.line(screen, red, (202, 215), (202, 200), 6)
-    screen.blit(arrows, (arrowsx, arrowsy))
     screen.blit(add, (addx, addy))
 def step3():
     step2()
-    pygame.draw.line(screen, black, (843, 325), (843, 400), 2)
-    pygame.draw.line(screen, blue, (457, 380), (885, 380), 2)
+    global step3ani
+    if step3ani >= 428:
+        step3ani = 428
+        pygame.draw.line(screen, black, (843, 325), (843, 400), 2)
+        pygame.draw.line(screen, blue, (885, 380), (885, 400), 2)
+    step3ani += 0.5
+    pygame.draw.line(screen, blue, (457, 380), (457+step3ani, 380), 2)
     pygame.draw.line(screen, blue, (457, 255), (457, 380), 2)
-    pygame.draw.line(screen, blue, (885, 380), (885, 400), 2)
+
     screen.blit(tlbhit,(tlbhitx,tlbhity))
 def step4():
     step3()
     screen.blit(tlbmiss,(tlbmissx,tlbmissy))
 def step5():
     step4()
-    pygame.draw.line(screen, red, (205, 253), (205, 515), 6)
+    global step5ani
+    global  arrowpagetabley
+    if step5ani >= 262:
+        step5ani = 262
+    step5ani += 0.5
+    if arrowpagetabley <= 500:
+        arrowpagetabley = 600
+    else:
+        arrowpagetabley -= 0.1
+    pygame.draw.line(screen, red, (205, 253), (205, 253+step5ani), 6)
     pygame.draw.line(screen, red, (203, 515), (250, 515), 10)
     screen.blit(arrowpagetable,(arrowpagetablex,arrowpagetabley))
 
 def step6():
     step5()
-    pygame.draw.line(screen, black, (500, 419), (835, 419), 2)
+    global step6ani
+    if step6ani >= 335:
+        step6ani = 335
+    step6ani += 0.5
+    pygame.draw.line(screen, black, (500, 419), (500+step6ani, 419), 2)
     pygame.draw.line(screen, black, (500, 419), (500, 500), 2)
     pygame.draw.line(screen, black, (450, 500), (500, 500), 2)
 
 step=0
-
 running=True
 while running:
     screen.fill((255, 255, 255))
@@ -121,7 +148,6 @@ while running:
                 step-=1
     if step is 7:
         step=0
-    explanation(step,fontx,fonty)
     if step==0:
        step0()
     elif step is 1:
@@ -132,17 +158,11 @@ while running:
         step3()
     elif step is 4:
         step4()
-        if arrowpagetabley <= 500:
-            arrowpagetabley=500
-        else:
-            arrowpagetabley -= 2
-
     elif step is 5:
         step5()
+
     elif step is 6:
         step6()
     else:
-        step=0
-
-
+       step=0
     pygame.display.update()
