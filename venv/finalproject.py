@@ -46,17 +46,20 @@ add=pygame.image.load('add.PNG')
 addx= 835
 addy= 400
 #fonts
-font= pygame.font.Font('freesansbold.ttf',14)
+font= pygame.font.Font('freesansbold.ttf',15)
 fontx=25
 fonty=0
 
-
-
+#colors
+red=(230,30,30)
+blue=(30,30,230)
+black=(0,0,0)
 #explanations
 explanations=[]
+explanations.append("WELCOME! Virtualization of VM to physical address.(press right arrow key to go to first step)")
 explanations.append("The virtual address consists of the page number and the offset")
 explanations.append("The page pointer(number) is taken and the processor does a simultaneous check of all the Translation Lookaside Buffer's entries to determine, if they match the page number.")
-explanations.append("if the page# is in the TLB the corresponding Frame number and offset are joined together to get the physical address")
+explanations.append("if the page# is in the TLB,it is a TLB hit and the corresponding Frame number and offset are joined together to get the physical address")
 explanations.append(" Otherwise its a TLB miss")
 explanations.append("The processor will then search the page table one entry at a time for the Page # to get the frame#")
 explanations.append("The corresponding Frame number and offset are joined together to get the physical address")
@@ -65,24 +68,42 @@ explanations.append("The corresponding Frame number and offset are joined togeth
 def explanation(step,x,y):
     explanation= font.render(explanations[step],True,(0,0,0))
     screen.blit(explanation,(x,y))
-
 def step0():
+    print("begin")
+
+def step1():
+    step0()
     screen.blit(pagetable, (pagetablex, pagetabley))
     screen.blit(tlb, (tlbx, tlby))
     screen.blit(virtualaddress, (virtualaddressx, virtualaddressy))
 
-def step1():
-    screen.blit(arrows, (arrowsx, arrowsy))
-    screen.blit(add, (addx, addy))
 def step2():
     step1()
-    screen.blit(tlbhit,(tlbhitx,tlbhity))
+    pygame.draw.line(screen, red,(200,200),(700,200),6 )
+    pygame.draw.line(screen, red, (202, 215), (202, 200), 6)
+    screen.blit(arrows, (arrowsx, arrowsy))
+    screen.blit(add, (addx, addy))
 def step3():
     step2()
-    screen.blit(tlbmiss,(tlbmissx,tlbmissy))
+    pygame.draw.line(screen, black, (843, 325), (843, 400), 2)
+    pygame.draw.line(screen, blue, (457, 380), (885, 380), 2)
+    pygame.draw.line(screen, blue, (457, 255), (457, 380), 2)
+    pygame.draw.line(screen, blue, (885, 380), (885, 400), 2)
+    screen.blit(tlbhit,(tlbhitx,tlbhity))
 def step4():
     step3()
+    screen.blit(tlbmiss,(tlbmissx,tlbmissy))
+def step5():
+    step4()
+    pygame.draw.line(screen, red, (205, 253), (205, 515), 6)
+    pygame.draw.line(screen, red, (203, 515), (250, 515), 10)
     screen.blit(arrowpagetable,(arrowpagetablex,arrowpagetabley))
+
+def step6():
+    step5()
+    pygame.draw.line(screen, black, (500, 419), (835, 419), 2)
+    pygame.draw.line(screen, black, (500, 419), (500, 500), 2)
+    pygame.draw.line(screen, black, (450, 500), (500, 500), 2)
 
 step=0
 
@@ -98,6 +119,8 @@ while running:
                 step+=1
             if event.key == pygame.K_LEFT:
                 step-=1
+    if step is 7:
+        step=0
     explanation(step,fontx,fonty)
     if step==0:
        step0()
@@ -112,7 +135,12 @@ while running:
         if arrowpagetabley <= 500:
             arrowpagetabley=500
         else:
-            arrowpagetabley -= 0.1
+            arrowpagetabley -= 2
+
+    elif step is 5:
+        step5()
+    elif step is 6:
+        step6()
     else:
         step=0
 
