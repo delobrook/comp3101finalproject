@@ -1,5 +1,8 @@
 import pygame
-import time
+
+
+
+
 #initialize pygame
 pygame.init()
 #create screen
@@ -160,9 +163,9 @@ while running:
         step4()
     elif step is 5:
         step5()
-
     elif step is 6:
         step6()
     else:
        step=0
     pygame.display.update()
+
