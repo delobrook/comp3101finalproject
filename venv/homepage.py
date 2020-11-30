@@ -49,13 +49,18 @@ while running:
                 import finalproject
             if event.key == pygame.K_2:
                 step=1
+            if event.key == pygame.K_3:
+                step=1
+            if event.key == pygame.K_4:
+                step=1
+
 
     title(titlefontx,titlefonty)
     instruction(instructionfontx,instructionfonty)
     option(option1fontx,option1fonty, 240, 30, 30, "1.    VISUALIZATION OF VIRTUAL ADDRESS TO PHYSICAL ADDRESS TRANSLATION USING TLB AND CACHE")
     option(option2fontx,option2fonty, 30, 240, 30, "2.    VISUALIZATION OF LRU PAGE REPLACEMENT STRATEGY")
     option(option3fontx,option3fonty, 30, 30, 240, "3.    VISUALIZATION OF FIFO PAGE REPLACEMENT STRATEGY")
-    option(option4fontx, option4fonty, 128, 0, 128, "3.    VISUALIZATION OF OPT PAGE REPLACEMENT STRATEGY")
+    option(option4fontx, option4fonty, 128, 0, 128, "4.    VISUALIZATION OF OPT PAGE REPLACEMENT STRATEGY")
 
 
     pygame.display.update()
